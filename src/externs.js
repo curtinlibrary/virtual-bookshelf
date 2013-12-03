@@ -220,14 +220,6 @@ $.getJSON = function(url, data, callback) {}
 $.extend = function(intoObject, fromObjects) {}
 
 
-var console = {
-	/**
-	@param {...*} varargs
-	*/
-	log: function(varargs) {}
-}
-
-
 /**
 @interface
 */
