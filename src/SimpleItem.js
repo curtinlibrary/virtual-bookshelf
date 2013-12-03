@@ -4,10 +4,12 @@
 function SimpleItem(data, context) {
 	// Create container for the item
 	var a = $('<a>')
-		.attr('href', data['link'])
-		.attr('target', data['target'])
-		.attr('title', data['title'])
 		.css('display', 'inline-block');
+	$.extend(a.get(0), {
+		'href': data['link'],
+		'target': data['target'],
+		'title': data['title']
+	});
 		
 	this['element'] = a;
 	// Before the item is loaded, the container has zero size

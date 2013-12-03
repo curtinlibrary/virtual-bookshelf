@@ -70,15 +70,6 @@ function fitInRectangle(inWidth, inHeight, aspectWidth, aspectHeight) {
 }
 
 
-function setLink(element, link) {
-	if (typeof link == 'string') {
-		element.attr('href', link);
-	} else {
-		element.css('cursor', 'pointer').click(link);
-	}
-}
-
-
 function loadCss(url, onload) {
 	if (document.createStyleSheet) {
 		// IE likes to be different
@@ -88,12 +79,12 @@ function loadCss(url, onload) {
 		// TODO: Is there a better way?
 	}
 	
-	var link = $('<link>')
-		.attr({
-			'rel': 'stylesheet',
-			'type': 'text/css',
-			'href': url
-		});
+	var link = $('<link>');
+	$.extend(link.get(0), {
+		'rel': 'stylesheet',
+		'type': 'text/css',
+		'href': url
+	});
 	$('head').append(link);
 	var stylesheet = link.get(0);
 	stylesheet.onload = onload;

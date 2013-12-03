@@ -23,12 +23,6 @@ jQueryObject.prototype = {
 	*/
 	css: function(objOrKey, value) {},
 	/**
-	@param {!(Object|string)} objOrKey
-	@param {(string|number)=} value
-	@return {!(jQueryObject|string)}
-	*/
-	attr: function(objOrKey, value) {},
-	/**
 	@param {string} key
 	@param {*} value
 	@return {!(jQueryObject|string)}
