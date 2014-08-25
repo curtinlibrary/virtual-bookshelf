@@ -8,9 +8,7 @@ The Virtual Bookshelf is a JavaScript library, developed by the [Curtin Universi
 - [Primo Catalogue][] shelf browsing.  For items held by the Library, the "Browse Shelf" tab will appear allowing browsing nearby cover images by call number.
 - Examples in the [Virtual Bookshelf Wiki][].
 
-This code is made available under the [MIT License][], with no additional promises of support.  However, we will continue to develop this code and will appreciate any feedback via the [issue tracker][].
-
-To access the repository at [bitbucket.org/curtin-library/virtual-bookshelf][repository] we request that you contact us using [this form][contact].
+This code is made available under the [MIT License][].
 
 Documentation
 -------------
@@ -23,6 +21,4 @@ Detailed documentation can be found in the [Virtual Bookshelf Wiki][].
 [Primo Catalogue]: http://catalogue.curtin.edu.au/
 [MIT License]: https://bitbucket.org/curtin-library/virtual-bookshelf/src/master/LICENSE
 [repository]: https://bitbucket.org/curtin-library/virtual-bookshelf
-[contact]: http://contact.library.curtin.edu.au/virtual-bookshelf
 [Virtual Bookshelf Wiki]: https://bitbucket.org/curtin-library/virtual-bookshelf/wiki
-[issue tracker]: https://bitbucket.org/curtin-library/virtual-bookshelf/issues?status=new&status=open
