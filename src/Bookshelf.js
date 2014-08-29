@@ -21,6 +21,7 @@ function Bookshelf(container, options) {
 	@constructor
 	*/
 	function BookshelfSegment(streamSegment, container) {
+		this.items = [];
 		this.element = $('<div>').css({
 			width: (streamSegment.length * itemWidth) + 'px',
 			height: itemHeight + 'px'
@@ -29,14 +30,29 @@ function Bookshelf(container, options) {
 		container.append(this.element);
 	}
 	
-	BookshelfSegment.prototype.setPosition = function(position) {
+	BookshelfSegment.prototype.setPosition = function(position, refreshing) {
 		this.transform.setTopLeft(Math.round(position * DEVICE_PIXEL_RATIO) / DEVICE_PIXEL_RATIO, 0);
+		if (refreshing) {
+			// May be in response to an image loading.  Re-center image.
+			for (var i = 0; i < this.items.length; ++i) {
+				this.repositionItem(this.items[i], i);
+			}
+		}
 	}
 	
 	BookshelfSegment.prototype.initItem = function(streamItem, index) {
-		this.element.append($(streamItem['element'])
-			.css('position', 'absolute')
-			.css('left', Math.round(itemSpacing * index) + 'px'));
+		this.items[index] = streamItem;
+		$(streamItem['element']).css('position', 'absolute');
+		this.repositionItem(streamItem, index);
+		this.element.append(streamItem['element']);
+	}
+	
+	BookshelfSegment.prototype.repositionItem = function(streamItem, index) {
+		var h = streamItem['height'] != null ? streamItem['height'] : itemHeight;
+		var w = streamItem['width'] != null ? streamItem['width'] : itemWidth;
+		$(streamItem['element'])
+			.css('top', Math.round(itemHeight - h) + 'px')
+			.css('left', Math.round(itemSpacing * index + (itemWidth - w) / 2) + 'px');
 	}
 	
 	BookshelfSegment.prototype.remove = function() {
@@ -52,8 +68,8 @@ function Bookshelf(container, options) {
 		// Step to next item if the current is at least 90% visible.
 		stepTollerance: 0.9,
 		
-		createSegment: function(segmentData, container) {
-			return new BookshelfSegment(segmentData, container);
+		createSegment: function(streamSegment, container) {
+			return new BookshelfSegment(streamSegment, container);
 		},
 		
 		createPlaceholderSegment: function(container) {

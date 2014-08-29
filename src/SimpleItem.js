@@ -12,7 +12,7 @@ function SimpleItem(data, context) {
 	});
 		
 	this['element'] = a;
-	// Before the item is loaded, the container has zero size
+	// Before the item is loaded the container has zero size
 	this['width'] = 0;
 	this['height'] = 0;
 	this['data'] = data;
@@ -21,7 +21,12 @@ function SimpleItem(data, context) {
 
 	// Load the image asynchronously
 	var image = new Image();
+	var loaded = false;
 	function ready() {
+		if (loaded) {
+			return;
+		}
+		loaded = true;
 		image.onload = null;
 		image.onerror = null;
 		
@@ -40,10 +45,14 @@ function SimpleItem(data, context) {
 				'height': '100%',
 				// Remove border for linked image
 				'border': 'none'
-			}));;
+			}));
+		
 		context.refresh();
 	}
 	image.onload = ready;
 	image.onerror = ready;
 	image.src = data['image'];
+	if (image.complete) {
+		ready.call(image);
+	}
 }

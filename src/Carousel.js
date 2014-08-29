@@ -76,7 +76,7 @@ function Carousel(container, options) {
 	
 	CarouselItem.prototype.setPosition = function(position) {
 		var p = (itemSpacing + position) / (itemSpacing + virtualWidth);
-		var visible = p > 0 && p < 1;
+		var visible = p > 0 && p < 1 && this.streamItem['width'] > 0 && this.streamItem['height'] > 0;
 		if (visible) {
 			var angle = p * Math.PI;
 			var z = 1 - Math.sin(angle);

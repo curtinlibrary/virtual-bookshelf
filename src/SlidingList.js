@@ -10,6 +10,7 @@ function SlidingList(container, options, view) {
 	var input;
 	var frameId;
 	var updatingTimeout;
+	var refreshingTimeout;
 	var animateStartTime;
 	var animateDuration;
 	var animatePositionsCallback;
@@ -135,10 +136,10 @@ function SlidingList(container, options, view) {
 			this.endX = view.marginWidth;
 		}
 		
-		this.updatePosition();
+		this.updatePosition(false);
 	}
-	Segment.prototype.updatePosition = function() {
-		this.viewSegment.setPosition(this.x);
+	Segment.prototype.updatePosition = function(refreshing) {
+		this.viewSegment.setPosition(this.x, refreshing);
 		
 		var focusedIndex = Math.floor((view.viewWidth / 2 - this.x) / view.itemSpacing);
 		if (focusedIndex >= 0 && focusedIndex < this.streamItems.length
@@ -225,7 +226,7 @@ function SlidingList(container, options, view) {
 				frameId = requestFrame(animate);
 			}
 		}
-		updateSegmentPositions();	
+		updateSegmentPositions(false);
 	}
 	
 	function doThrow(velocity) {
@@ -311,9 +312,9 @@ function SlidingList(container, options, view) {
 	
 	// Move segments to their x position
 	// Check for currently focused item
-	function updateSegmentPositions() {
+	function updateSegmentPositions(refreshing) {
 		for (var i = 0; i < segments.length; ++i) {
-			segments[i].updatePosition();
+			segments[i].updatePosition(refreshing);
 		}
 	}
 	
@@ -381,13 +382,15 @@ function SlidingList(container, options, view) {
 			var segment = segments[i];
 			segment.x = segment.endX = segment.startX + offset;
 		}
-		updateSegmentPositions();
+		updateSegmentPositions(false);
 		updateLoadedSegments();
 	}
 	
 	this.remove = function() {
 		clearTimeout(updatingTimeout);
 		updatingTimeout = undefined;
+		clearTimeout(refreshingTimeout);
+		refreshingTimeout = undefined;
 		cancelAnimation();
 		while (segments.length > 0) {
 			remove(segments.pop());
@@ -395,9 +398,12 @@ function SlidingList(container, options, view) {
 	}
 	
 	this.refresh = function() {
-		if (frameId === undefined) {
-			updateSegmentPositions();
-			updateLoadedSegments();
+		if (frameId === undefined && refreshingTimeout === undefined) {
+			refreshingTimeout = setTimeout(function() {
+				refreshingTimeout = undefined;
+				updateSegmentPositions(true);
+				updateLoadedSegments();
+			}, 0);
 		}
 	}
 	
